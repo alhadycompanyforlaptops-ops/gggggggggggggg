@@ -1,9 +1,17 @@
 import React from 'react';
 import { Trophy, Users, Award, Sparkles } from 'lucide-react';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  isDarkMode?: boolean;
+}
+
+export const Header: React.FC<HeaderProps> = ({ isDarkMode = false }) => {
   return (
-    <header className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 text-white relative overflow-hidden">
+    <header className={`text-white relative overflow-hidden transition-colors duration-300 ${
+      isDarkMode 
+        ? 'bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900' 
+        : 'bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800'
+    }`}>
       {/* Background animated elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="floating-sparkle absolute top-10 left-10 text-yellow-300 opacity-70">

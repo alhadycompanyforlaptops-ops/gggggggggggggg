@@ -12,7 +12,11 @@ interface ExamEvent {
   color: string;
 }
 
-export const ExamSchedule: React.FC = () => {
+interface ExamScheduleProps {
+  isDarkMode?: boolean;
+}
+
+export const ExamSchedule: React.FC<ExamScheduleProps> = ({ isDarkMode = false }) => {
   const [timeLeft, setTimeLeft] = useState<{ [key: number]: string }>({});
 
   // حساب التواريخ بناءً على الجمعة القادمة
@@ -150,22 +154,30 @@ export const ExamSchedule: React.FC = () => {
   };
 
   return (
-    <section className="bg-gradient-to-br from-blue-50 via-white to-purple-50 py-16 min-h-screen">
+    <section className={`py-16 min-h-screen transition-colors duration-300 ${
+      isDarkMode 
+        ? 'bg-gradient-to-br from-gray-800 via-gray-900 to-gray-700' 
+        : 'bg-gradient-to-br from-blue-50 via-white to-purple-50'
+    }`}>
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12 animate-slideInDown">
           <div className="flex justify-center items-center gap-3 mb-4">
             <Calendar className="w-12 h-12 text-blue-600 animate-bounce-slow" />
-            <h1 className="text-4xl md:text-5xl font-bold gradient-text-animated">
+            <h1 className={`text-4xl md:text-5xl font-bold ${isDarkMode ? 'text-gray-100' : 'gradient-text-animated'}`}>
               جدول مواعيد الاختبارات
             </h1>
             <Timer className="w-12 h-12 text-purple-600 animate-spin-slow" />
           </div>
-          <p className="text-xl text-gray-600 mb-6">
+          <p className={`text-xl mb-6 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             مواعيد اختبارات مسابقة المولد النبوي الشريف بالجامع الشرقي
           </p>
-          <div className="bg-gradient-to-r from-yellow-100 to-orange-100 border border-yellow-300 rounded-xl p-4 max-w-2xl mx-auto">
-            <div className="flex items-center justify-center gap-2 text-amber-800">
+          <div className={`border rounded-xl p-4 max-w-2xl mx-auto transition-colors duration-300 ${
+            isDarkMode 
+              ? 'bg-gradient-to-r from-yellow-900/30 to-orange-900/30 border-yellow-600/50' 
+              : 'bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-300'
+          }`}>
+            <div className={`flex items-center justify-center gap-2 ${isDarkMode ? 'text-amber-200' : 'text-amber-800'}`}>
               <Bell className="w-5 h-5 animate-ring" />
               <span className="font-semibold">تنبيه: تأكد من الحضور قبل الموعد بـ 15 دقيقة</span>
             </div>
@@ -184,7 +196,9 @@ export const ExamSchedule: React.FC = () => {
                 <div className="absolute right-6 w-5 h-5 bg-white border-4 border-blue-500 rounded-full animate-pulse-dot shadow-lg"></div>
                 
                 {/* Event card */}
-                <div className="mr-16 bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden hover-lift">
+                <div className={`mr-16 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden hover-lift ${
+                  isDarkMode ? 'bg-gray-700' : 'bg-white'
+                }`}>
                   {/* Card header */}
                   <div className={`bg-gradient-to-r ${event.color} text-white p-6`}>
                     <div className="flex items-center justify-between">
@@ -210,11 +224,11 @@ export const ExamSchedule: React.FC = () => {
 
                   {/* Card content */}
                   <div className="p-6">
-                    <p className="text-gray-600 mb-4 text-lg">{event.description}</p>
+                    <p className={`mb-4 text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{event.description}</p>
                     
                     {/* Parts list */}
                     <div className="mb-6">
-                      <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                      <h4 className={`font-semibold mb-3 flex items-center gap-2 ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
                         <Users className="w-5 h-5 text-blue-600" />
                         الأجزاء المطلوبة:
                       </h4>
@@ -222,7 +236,11 @@ export const ExamSchedule: React.FC = () => {
                         {event.parts.map((part, partIndex) => (
                           <span
                             key={partIndex}
-                            className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold animate-fadeInScale"
+                            className={`px-3 py-1 rounded-full text-sm font-semibold animate-fadeInScale ${
+                              isDarkMode 
+                                ? 'bg-gradient-to-r from-blue-900/30 to-purple-900/30 text-blue-200' 
+                                : 'bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800'
+                            }`}
                             style={{ animationDelay: `${partIndex * 0.1}s` }}
                           >
                             {part}
@@ -232,11 +250,15 @@ export const ExamSchedule: React.FC = () => {
                     </div>
 
                     {/* Countdown */}
-                    <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-4 rounded-xl">
+                    <div className={`p-4 rounded-xl transition-colors duration-300 ${
+                      isDarkMode 
+                        ? 'bg-gradient-to-r from-gray-600 to-gray-500' 
+                        : 'bg-gradient-to-r from-gray-50 to-blue-50'
+                    }`}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Clock className="w-5 h-5 text-blue-600 animate-tick" />
-                          <span className="font-semibold text-gray-700">الوقت المتبقي:</span>
+                          <span className={`font-semibold ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>الوقت المتبقي:</span>
                         </div>
                         <div className={`text-xl font-bold ${getUrgencyClass(event.id)}`}>
                           {timeLeft[event.id] || 'جاري الحساب...'}
@@ -252,9 +274,13 @@ export const ExamSchedule: React.FC = () => {
 
         {/* Footer note */}
         <div className="text-center mt-12 animate-fadeInScale">
-          <div className="bg-gradient-to-r from-green-100 to-blue-100 border border-green-300 rounded-xl p-6 max-w-3xl mx-auto">
-            <h3 className="text-xl font-bold text-green-800 mb-2">ملاحظات مهمة</h3>
-            <ul className="text-green-700 space-y-2 text-right">
+          <div className={`border rounded-xl p-6 max-w-3xl mx-auto transition-colors duration-300 ${
+            isDarkMode 
+              ? 'bg-gradient-to-r from-green-900/30 to-blue-900/30 border-green-600/50' 
+              : 'bg-gradient-to-r from-green-100 to-blue-100 border-green-300'
+          }`}>
+            <h3 className={`text-xl font-bold mb-2 ${isDarkMode ? 'text-green-200' : 'text-green-800'}`}>ملاحظات مهمة</h3>
+            <ul className={`space-y-2 text-right ${isDarkMode ? 'text-green-300' : 'text-green-700'}`}>
               <li className="flex items-center gap-2">
                 <ChevronRight className="w-4 h-4" />
                 يرجى الحضور قبل الموعد المحدد بـ 15 دقيقة على الأقل
@@ -273,14 +299,18 @@ export const ExamSchedule: React.FC = () => {
       </div>
       
       {/* Quran Verse */}
-      <div className="bg-gradient-to-r from-yellow-100/50 to-orange-100/50 border-t border-yellow-300 py-6 mt-8">
+      <div className={`border-t py-6 mt-8 transition-colors duration-300 ${
+        isDarkMode 
+          ? 'bg-gradient-to-r from-yellow-900/20 to-orange-900/20 border-yellow-600/50' 
+          : 'bg-gradient-to-r from-yellow-100/50 to-orange-100/50 border-yellow-300'
+      }`}>
         <div className="container mx-auto px-4 text-center">
-          <p className="text-xl md:text-2xl text-yellow-800 font-bold mb-2" style={{
+          <p className={`text-xl md:text-2xl font-bold mb-2 ${isDarkMode ? 'text-yellow-200' : 'text-yellow-800'}`} style={{
             textShadow: '0 0 10px rgba(255, 193, 7, 0.5), 0 0 20px rgba(255, 193, 7, 0.3)'
           }}>
             "وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا"
           </p>
-          <p className="text-yellow-700 text-sm">
+          <p className={`text-sm ${isDarkMode ? 'text-yellow-300' : 'text-yellow-700'}`}>
             صدق الله العظيم - سورة المزمل
           </p>
         </div>

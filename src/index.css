@@ -10,6 +10,16 @@ body {
   direction: rtl;
 }
 
+/* Dark mode styles */
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
 /* Custom animations */
 @keyframes fadeIn {
   from {

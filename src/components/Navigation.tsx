@@ -4,9 +4,10 @@ import { Home, Trophy, Calendar, BookOpen } from 'lucide-react';
 interface NavigationProps {
   currentPage: 'main' | 'results' | 'schedule';
   onNavigate: (page: 'main' | 'results' | 'schedule') => void;
+  isDarkMode?: boolean;
 }
 
-export const Navigation: React.FC<NavigationProps> = ({ currentPage, onNavigate }) => {
+export const Navigation: React.FC<NavigationProps> = ({ currentPage, onNavigate, isDarkMode = false }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -54,24 +55,32 @@ export const Navigation: React.FC<NavigationProps> = ({ currentPage, onNavigate 
   ];
 
   return (
-    <nav className={`bg-white/95 backdrop-blur-md shadow-xl border-b border-gray-200 sticky top-0 z-50 transition-transform duration-300 ${
+    <nav className={`backdrop-blur-md shadow-xl border-b sticky top-0 z-40 transition-all duration-300 ${
       isVisible ? 'translate-y-0' : '-translate-y-full'
+    } ${
+      isDarkMode 
+        ? 'bg-gray-900/95 border-gray-700' 
+        : 'bg-white/95 border-gray-200'
     }`}>
       <div className="container mx-auto px-4 py-4">
         {/* Logo/Title section */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-full">
+            <div className={`p-2 rounded-full ${
+              isDarkMode 
+                ? 'bg-gradient-to-r from-gray-600 to-gray-500' 
+                : 'bg-gradient-to-r from-blue-600 to-purple-600'
+            }`}>
               <BookOpen className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-800">مسابقة المولد النبوي</h1>
-              <p className="text-sm text-gray-600">الجامع الشرقي - دمليج</p>
+              <h1 className={`text-xl font-bold ${isDarkMode ? 'text-gray-100' : 'text-gray-800'}`}>مسابقة المولد النبوي</h1>
+              <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>الجامع الشرقي - دمليج</p>
             </div>
           </div>
           
           {/* Quick stats */}
-          <div className="hidden md:flex items-center gap-4 text-sm text-gray-600">
+          <div className={`hidden md:flex items-center gap-4 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
             <div className="flex items-center gap-1">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span>المسابقة نشطة</span>
@@ -94,6 +103,8 @@ export const Navigation: React.FC<NavigationProps> = ({ currentPage, onNavigate 
                   transition-all duration-300 transform hover:scale-105 hover:-translate-y-1
                   ${isActive 
                     ? `bg-gradient-to-r ${item.gradient} text-white shadow-lg` 
+                    : isDarkMode
+                    ? `bg-gray-800 text-gray-300 hover:bg-gray-700 ${item.hoverGradient} hover:text-white`
                     : `bg-gray-100 text-gray-700 hover:bg-gray-200 ${item.hoverGradient} hover:text-white`
                   }
                 `}
